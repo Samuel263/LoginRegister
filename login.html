@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://kit.fontawesome.com/bac78dabd8.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container { text-align: center; }
+        .social-login button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            text-align: left;
+        }
+        .social-login button i { margin-right: 10px; }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .separator hr { flex: 1; border: none; border-top: 1px solid #ccc; }
+        .separator span { padding: 0 10px; color: #aaa; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <label class="switch">
+            <input id="darkModeToggle" type="checkbox">
+            <span class="slider round">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </span>
+        </label>
+    </div>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Dirección de correo electrónico*" required>
+            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+            <button type="submit"><i class="fas fa-lock"></i> Ingresar</button>
+            <div class="separator">
+                <hr>
+                <span>o</span>
+                <hr>
+            </div>
+            <div class="social-login">
+                <button type="button" id="loginGoogle" class="social-btn"><i class="fab fa-google"></i> Continuar con Google</button>
+            </div>
+        </form>
+        <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+    </div>
+    <canvas id="backgroundCanvas"></canvas>
+
+    <!-- Firebase Initialization Scripts -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsY-aL1y8ZSZSbfNIu5DwX0MpabBII8iA",
+            authDomain: "samuelc-84809.firebaseapp.com",
+            projectId: "samuelc-84809",
+            storageBucket: "samuelc-84809.appspot.com",
+            messagingSenderId: "819870940737",
+            appId: "1:819870940737:web:1b0f853cf4a5ff013ed0c0",
+            measurementId: "G-NZP5S4TSHP"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert('Login successful!');
+                })
+                .catch((error) => {
+                    alert(`Error: ${error.message}`);
+                });
+        });
+
+        // Google Login
+        document.getElementById('loginGoogle').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithRedirect(auth, provider);
+        });
+
+        // Handle Redirect Result
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result) {
+                    const user = result.user;
+                    alert('Google login successful!');
+                }
+            })
+            .catch((error) => {
+                if (error.message !== 'Firebase: Error (auth/no-current-user).') {
+                    alert(`Error: ${error.message}`);
+                }
+            });
+    </script>
+</body>
+</html>

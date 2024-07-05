@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://kit.fontawesome.com/bac78dabd8.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .register-container { text-align: center; }
+        .social-register button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            text-align: left;
+        }
+        .social-register button i { margin-right: 10px; }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .separator hr { flex: 1; border: none; border-top: 1px solid #ccc; }
+        .separator span { padding: 0 10px; color: #aaa; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <label class="switch">
+            <input id="darkModeToggle" type="checkbox">
+            <span class="slider round">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </span>
+        </label>
+    </div>
+    <div class="register-container">
+        <h2>Registrate</h2>
+        <form id="registerForm">
+            <input type="email" id="registerEmail" placeholder="Dirección de correo electrónico*" required>
+            <input type="password" id="registerPassword" placeholder="Contraseña" required>
+            <button type="submit"><i class="fas fa-lock"></i> Registrate</button>
+            <div class="separator">
+                <hr>
+                <span>o</span>
+                <hr>
+            </div>
+            <div class="social-register">
+                <button type="button" id="registerGoogle" class="social-btn"><i class="fab fa-google"></i> Continuar con Google</button>
+            </div>
+        </form>
+        <p>¿Ya tienes cuenta? <a href="login.html">Inicia Sesión</a></p>
+    </div>
+    <canvas id="backgroundCanvas"></canvas>
+
+    <!-- Firebase Initialization Scripts -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsY-aL1y8ZSZSbfNIu5DwX0MpabBII8iA",
+            authDomain: "samuelc-84809.firebaseapp.com",
+            projectId: "samuelc-84809",
+            storageBucket: "samuelc-84809.appspot.com",
+            messagingSenderId: "819870940737",
+            appId: "1:819870940737:web:1b0f853cf4a5ff013ed0c0",
+            measurementId: "G-NZP5S4TSHP"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Registration Form Submission
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert('Registration successful!');
+                })
+                .catch((error) => {
+                    alert(`Error: ${error.message}`);
+                });
+        });
+
+        // Google Registration
+        document.getElementById('registerGoogle').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithRedirect(auth, provider);
+        });
+
+        // Handle Redirect Result
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result) {
+                    const user = result.user;
+                    alert('Google registration successful!');
+                }
+            })
+            .catch((error) => {
+                if (error.message !== 'Firebase: Error (auth/no-current-user).') {
+                    alert(`Error: ${error.message}`);
+                }
+            });
+    </script>
+</body>
+</html>
