@@ -51,7 +51,6 @@
             </div>
             <div class="social-login">
                 <button type="button" id="loginGoogle" class="social-btn"><i class="fab fa-google"></i> Continuar con Google</button>
-                <button type="button" id="loginApple" class="social-btn"><i class="fab fa-apple"></i> Continuar con Apple</button>
             </div>
         </form>
         <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
@@ -62,7 +61,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signInWithRedirect, getRedirectResult, GoogleAuthProvider, OAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -99,18 +98,12 @@
             signInWithRedirect(auth, provider);
         });
 
-        // Apple Login
-        document.getElementById('loginApple').addEventListener('click', () => {
-            const provider = new OAuthProvider('apple.com');
-            signInWithRedirect(auth, provider);
-        });
-
         // Handle Redirect Result
         getRedirectResult(auth)
             .then((result) => {
                 if (result) {
                     const user = result.user;
-                    alert('Login successful!');
+                    alert('Google login successful!');
                 }
             })
             .catch((error) => {
