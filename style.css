@@ -178,7 +178,7 @@ body.light-mode .register-container form select {
 }
 
 body.light-mode .register-container form button {
-    background-color: #181818; /* Color gris oscuro para el botón en modo claro */
+    background-color: #0CA37F; /* Color gris oscuro para el botón en modo claro */
     color: #ffffff; /* Texto blanco para el botón en modo claro */
 }
 
